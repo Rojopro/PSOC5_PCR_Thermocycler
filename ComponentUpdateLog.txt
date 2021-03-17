@@ -1,9 +1,0 @@
-Last Modified Date & Time: 03/04/2016 19:04:48
-
-OLED: TopDesign.cysch
-	I2COLED [v3.10] to [v3.10]
-
-OLED: OLED.cydwr
-	cy_boot [v4.20] to [v5.30]
-
-
