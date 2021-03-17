@@ -11,6 +11,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Derived license(applies to graphics library part)
 --------------------------------------------------
+SSD1306 OLED I2C driver
+Derk Steggewentz, 3/2015 
 
 Software License Agreement (BSD License)
 
