@@ -15,6 +15,9 @@
 const float W = 0.00001;    //0.01*10^-3
 const float L = 0.430;      //430*10-3 -> 344ohm@25°C // 420 = 336
 const float T = 0.0003;    //0.3*10^-3
+//
+
+//Temperature steps and duration for PCR process
 const float temp0 = 0.00;
 const float temp1 = 94.50;
 const int T1 = 12; //*10
@@ -22,9 +25,12 @@ const float temp2 = 55.00;
 const int T2 = 2; //*10
 const float temp3 = 72.00;
 const int T3 = 30; //*10
+//
+
+
 int step = 0;
 float reg = 0.00;
-float pidSpeed = 5;   ///à calibrer
+float pidSpeed = 5;   ///Todo: calibration, I D ?
 float Rmes;
 int16 IdacCalib_temperature = 0;
 int Adc_Offset = 0;
@@ -33,16 +39,17 @@ int current = 125; //(255 = 2.04mA / 125 = 1mA)
 int InterruptCnt;
 int8 btnState;
 
-
-CY_ISR(InterruptHandler)
+//interrupts
+CY_ISR(InterruptHandler) //counts ms
 {
    	Timer_STATUS;
     InterruptCnt++;    
 }
-CY_ISR(sw1Handler)
+CY_ISR(sw1Handler)      //catches switch status
 {
     btnState=1;    
 }
+//
 
 void DMA_Config(void)
 {
@@ -80,12 +87,12 @@ void DMA_Config(void)
 void Calibration(){
     
 int loop = 0;  
-int RIcalib = 1000;   ///////à calibrer
+int RIcalib = 1000;   ///////Needs to be precisely calibrated : measure the Resistor used with a proper multimeter
 int V_calib_theorique = RIcalib*(current*2040/255);
 	
     AMux_Adc_Select(2);     
     
-    for(loop = 0; loop < 4; loop++)
+    for(loop = 0; loop < 4; loop++) //mean for stability
     {    
         ADC_StartConvert();
         ADC_IsEndConversion(ADC_WAIT_FOR_RESULT);
@@ -99,7 +106,7 @@ int V_calib_theorique = RIcalib*(current*2040/255);
     AMux_Idac_Select(0);
     IDAC_SetValue(current);
 
-    for(loop = 0; loop < 4; loop++)
+    for(loop = 0; loop < 4; loop++) //mean for stability
     {    
         ADC_StartConvert();
         ADC_IsEndConversion(ADC_WAIT_FOR_RESULT);
@@ -122,7 +129,7 @@ float GetTemp(){
     float temp;
     float Vol;
     
-    //formule
+    //formulae 
     /*
     R=ρ⋅(L/T⋅W)⋅[1+α⋅(temp−25)]
     
@@ -133,7 +140,7 @@ float GetTemp(){
     ρ copper  =  1.7 x 10-6 ohm-cm
         -> gold 2.4 x 10-6
     α copper (temperature coefficient) = 3.9 x 10-3 ohm/ohm/C
-        -> gold 0.003715 -> empiriquement 2.365*10-3 ?
+        -> gold 0.003715 -> empirically ~2.365*10-3
     */
 	
 	AMux_Idac_Select(1); 
@@ -146,15 +153,15 @@ float GetTemp(){
         ADC_StopConvert();
         V_mes = ADC_CountsTo_uVolts(ADC_GetResult32())-Adc_Offset; 
         
-       // while (Filter_1_IsInterruptChannelA() == 0) ;                     ///////overflow du filtre
+       // while (Filter_1_IsInterruptChannelA() == 0) ;                     ///////WIP: fix filter overflow
 	   // V_mes = ADC_CountsTo_uVolts(Filter_1_Read16(Filter_1_CHANNEL_A)); ///////
 	
 	IDAC_SetValue(0);
     
     Rmes = (float)V_mes / ((float)(current*2040/255)-(float)Idac_Offset);
     Vol = L/(W*T);
-    //temp = (((Rmes/(0.0000024*Vol))-1)/0.002365)+25;
-	temp = (((Rmes/(207.5))-1)/-0.0005)+25; //carbone ?
+    temp = (((Rmes/(0.0000024*Vol))-1)/0.002365)+25;  //to measure with the actual chip
+	//temp = (((Rmes/(207.5))-1)/-0.0005)+25;             //to measure with crappy silicon layers resistors
     
     return(temp);  
 }
@@ -180,10 +187,11 @@ void Regulation(float actualTemp, float consigne){
     PWM_1_WriteCompare((int)reg);
 }
 
-/////////////////////////////////////////////////////////main
+
 
 int main(){
 
+    ///////////////////////////////<setup>
 char buffer[100];
 char state[100];
 
@@ -202,9 +210,9 @@ int16 temperature_diff;
     AMux_Adc_Start(); 
 	AMux_Idac_Start();
     
-   // Filter_1_Start();
-   // Filter_1_INT_CTRL_REG |= (1 << Filter_1_CHANNEL_A);
-   // DMA_Config();
+   // Filter_1_Start();                                     //WIP: fix filter overflow
+   // Filter_1_INT_CTRL_REG |= (1 << Filter_1_CHANNEL_A);   //
+   // DMA_Config();                                         //
     
     CyGlobalIntEnable;
     tim_StartEx(InterruptHandler);
@@ -212,14 +220,15 @@ int16 temperature_diff;
     Timer_Start();
     display_init(DISPLAY_ADDRESS);
 
-   Calibration();
+    Calibration();
     
-DieTemp_GetTemp(&IdacCalib_temperature);
-
+    DieTemp_GetTemp(&IdacCalib_temperature);
+    ///////////////////////////////</setup>
+    
     for(;;){   
       DieTemp_GetTemp(&psoc_temperature);
 		temperature_diff = psoc_temperature - IdacCalib_temperature;	
-		if((temperature_diff > 10) || (temperature_diff  < -10))
+		if((temperature_diff > 10) || (temperature_diff  < -10)) //recalibrate if die temp varied too much -> avoid idac drifts
 		{			
             Calibration();
 			IdacCalib_temperature = psoc_temperature; 
@@ -227,7 +236,7 @@ DieTemp_GetTemp(&IdacCalib_temperature);
         
         temperature = GetTemp();
         
-        switch(step)
+        switch(step)                                            //PCR process
         {
         case 0: //off
             Regulation(temperature, temp0);
