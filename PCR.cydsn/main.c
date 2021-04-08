@@ -163,7 +163,7 @@ float GetTemp(){
     
     Rmes = (float)V_mes / ((float)(current*2040/255)-(float)Idac_Offset);
     Vol = L/(W*T);
-    temp = (((Rmes/(0.0000024*Vol))-1)/0.002358)+25;
+    temp = (((Rmes/(0.0000024*Vol))-1)/0.002358)+23.5;
     
     return(temp);  
 }
