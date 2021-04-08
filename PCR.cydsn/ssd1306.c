@@ -2,11 +2,13 @@
 
 SSD1306 OLED - I2C driver
 
-Port by Roy Jordan for PSOC5 from Derk Steggewentz' PSOC4 port of Adafruit graphical library
-
+Derk Steggewentz, 3/2015 
 
 This is a I2C driver for SSD1306 OLED displays including graphics library.
+
+
 The graphics library part (gfx_ functions) is based on the Adafruit graphics library.
+
 
 No license restrictions on my part, do whatever you want as long as you follow the inherited
 license requirements (applying to the Adafruit graphics library part).
