@@ -15,13 +15,21 @@ Thus this prototype was conceived as a mean to test the usability of localy conc
 
 ## Theory
 Considering the Resistivity formulae :
+
 ![Math](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/Math.PNG)
+
 We see that we can deduce a resistor's temperature knowing its value, materials and dimensions.
 Considering our fabrication process and the use of gold tracks, we get these parameters :
+
 ![MathVal](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/MathVal.PNG)
 
 ## Chip Fabrication
+Using the Photoresist method, we produced a heating and sensing chip to be used in PCR :
+https://en.wikipedia.org/wiki/Photoresist
+
 ![ChipFab](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/ChipFab.PNG)
+
+Thus giving us the result below :
 ![Chip](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/Chip.PNG)
 
 ## Model
