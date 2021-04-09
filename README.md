@@ -14,6 +14,6 @@ Thus this prototype was conceived as a mean to test the usability of localy conc
 
 
 ## To Do
-An auto-calibration function is needed, as resistance varies greatly between chips. Consider linearising the 25-70°C measures with 0°C, or use an exterior ambiant temperature measure to assume the resistor offset. Thermal coefficient may or may not need caibration as well.
-Control Loop could use a bit more tuning.
-Currently, software filter is disabled to avoid overflow (see commented lines in main.c).
+*An auto-calibration function is needed, as resistance varies greatly between chips. Consider linearising the 25-70°C measures with 0°C, or use an exterior ambiant temperature measure to assume the resistor offset. Thermal coefficient may or may not need caibration as well.
+*Control Loop could use a bit more tuning.
+*Currently, software filter is disabled to avoid overflow (see commented lines in main.c).
