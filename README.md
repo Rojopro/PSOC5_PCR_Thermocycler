@@ -23,6 +23,8 @@ Considering our fabrication process and the use of gold tracks, we get these par
 
 ![MathVal](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/MathVal.PNG)
 
+These will require chipt-to-chip tuning (see To Do section)
+
 ## Chip Fabrication
 Using the Photoresist method, we produced a heating and sensing chip to be used in PCR :
 
