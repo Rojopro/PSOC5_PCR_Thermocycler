@@ -14,7 +14,10 @@ Thus this prototype was conceived as a mean to test the usability of localy conc
 ![ModulePCR](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/ModulePCR.PNG)
 
 ## Theory
+Considering the Resistivity formulae :
 ![Math](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/Math.PNG)
+We see that we can deduce a resistor's temperature knowing its value, materials and dimensions.
+Considering our fabrication process and the use of gold tracks, we get these parameters :
 ![MathVal](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/MathVal.PNG)
 
 ## Chip Fabrication
