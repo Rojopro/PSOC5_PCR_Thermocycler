@@ -2,7 +2,11 @@
 
 SSD1306 OLED - I2C driver
 
-Derk Steggewentz, 3/2015 
+ROY Jordan, 04/2018 for PSOC5
+
+from 
+
+Derk Steggewentz, 3/2015 for PSOC4
 
 This is a I2C driver for SSD1306 OLED displays including graphics library.
 
