@@ -65,3 +65,4 @@ We can see the temperature precision is top notch :
 * Find a way to put disposable and thermally-conductive recipient in contact with the chip for an actual test.
 * Calibrating the heating offset of regulation() according to the lowest T set instead of hardcoding it.
 * PCR should be able to attain and maintain 4°C after the end of its many cycles to inactivate the polymerase component.
+* Consider adding a debouncer to the switch if needed
