@@ -1,4 +1,7 @@
-//ROY Jordan - 04/2021//
+/*===============================================/
+ROY Jordan - 04/2021
+https://github.com/Rojopro/PSOC5_PCR_Thermocycler/
+/===============================================*/
 
 #include <project.h>
 #include <stdlib.h>
