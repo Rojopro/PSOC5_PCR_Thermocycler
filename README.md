@@ -6,7 +6,7 @@ Currently a work in progress (see To Do section)
 
 ## Presentation
 Considering the present sanitary crisis, it is now mandatory to create systems capable of assisting health professionals in our struggle against Covid-19.
-One of the means to do so for engineers is to conceive tools to facilitate early detection of contaminations, with easy to use and produce tests.
+One of the means to do so for engineers is to conceive tools to facilitate early detection of contaminations, wich are easy to use and reliable.
 Thus this prototype was conceived as a mean to test the usability of localy conceived chips.
 
 ## Preview
