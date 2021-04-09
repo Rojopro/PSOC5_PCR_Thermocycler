@@ -25,18 +25,35 @@ Considering our fabrication process and the use of gold tracks, we get these par
 
 ## Chip Fabrication
 Using the Photoresist method, we produced a heating and sensing chip to be used in PCR :
+
 https://en.wikipedia.org/wiki/Photoresist
 
 ![ChipFab](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/ChipFab.PNG)
 
 Thus giving us the result below :
+
 ![Chip](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/Chip.PNG)
 
 ## Model
+To use our chip we designed this model :
+
 ![Model](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/PsocProfil.PNG)
 
+* It consist mainly of an IDAC set to 1mA fed to the measurement resistor of the chip. A 20bit Delta-Sigma is then used to measure the voltage accross it, which return the resistance value knowing the current.
+* The heating element is controled via a 16bit PWM fed to a BJT.
+* Calibration being of the utmost importance, a precise un-heated resistor is used to compensated the IDAC tendancy to drift with temperature.
+* USB and I2C modules are used for HMI and logging.
+* Software Filter can be used to soften the thermal noise the adc might get.
+* The PCR temperature and duration steps are controlled via a software Switch-case for ease of update.
+
 ### Result
+
+The control loop results are as follow :
+
 ![AsservissementModulePCR](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/Asservissement.PNG)
+
+We can see the temperature precision is top notch :
+
 ![AsservissementQ](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/AsservissementQ.PNG)
 
 ## To Do
