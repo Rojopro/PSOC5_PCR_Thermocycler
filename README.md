@@ -10,8 +10,20 @@ One of the means to do so for engineers is to conceive tools to facilitate early
 Thus this prototype was conceived as a mean to test the usability of localy conceived chips.
 
 ## Preview
+### Actual Prototype :
 ![ModulePCR](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/ModulePCR.PNG)
 
+## Theory
+blablaPCR
+
+## Chip Fabrication
+blablachip@Esiee
+
+## Model
+blablaPsoc
+
+### Result
+blablasimu
 
 ## To Do
 * An auto-calibration function is needed, as resistance varies greatly between chips. Consider linearising the 25-70°C measures with 0°C, or use an exterior ambiant temperature measure to assume the resistor offset. Thermal coefficient may or may not need caibration as well.
