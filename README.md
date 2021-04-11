@@ -18,7 +18,9 @@ Considering the Resistivity formulae :
 
 ![Math](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/Math.PNG)
 
-With L standing for track Length, W for Width and T for Thickness.
+* With L standing for track Length, W for Width and T for Thickness.
+* p is resistivity in Ohm.cm
+* a is the thermal coefficient in Ohm/Ohm/C
 
 We see that we can deduce a resistor's temperature knowing its value, materials and dimensions.
 Considering our fabrication process and the use of gold tracks, we get these parameters :
