@@ -21,15 +21,15 @@ const float P = 0.125;
 const float I = 1;
 const float D = 0.001;
 
-const int RIcalib = 998;    ///////à calibrer -> mesurer au multimetre
+const int RIcalib = 998;    ///////à calibrer -> mesurer au multimetre ou utiliser une résistance de précision
 
 const float W = 0.00001;    //0.01*10^-3 //constant
-const float L = 0.3447;     // ~30.10^3  //constant //utilisé pour la calib manuelle
-const float T = 0.0003;     //0.3*10^-3   //variable
+const float L = 0.3447;     // ~30*10^3  //constant //actuellement utilisé pour la calib manuelle
+const float T = 0.0003;     //0.3*10^-3   //variable  //à utiliser pour la calib
 
 const float temp0 = 0.00;
 const float temp1 = 94.00;
-const int T1 = 15;      //120s
+const int T1 = 15;      //120s  <- durée d'un vrai cycle PCR
 const float temp2 = 55.00;
 const int T2 = 15;       //20s
 const float temp3 = 72.00;
@@ -134,11 +134,11 @@ int V_calib_theorique = RIcalib*(current*2040/255);
 }
 
 float GetTemp(){
-	int V_mes = 0;
+    int V_mes = 0;
     float temp;
     float Vol;
    
-    /*                         //formule
+    /* formule
     R=ρ⋅(L/T⋅W)⋅[1+α⋅(temp−25)]
     
     ρ=resistivity
@@ -146,9 +146,9 @@ float GetTemp(){
     W=trace width
     T=trace height
     ρ copper  =  1.7 x 10-6 ohm-cm
-        -> gold 2.4 x 10-6
+        -> gold 2.4 x 10-6 -> si α != 0.003715 alors ρ != 2.4 x 10-6 -> à trouver
     α copper (temperature coefficient) = 3.9 x 10-3 ohm/ohm/C
-        -> gold 0.003715 -> empiriquement 2.365*10-3 ?
+        -> gold 0.003715 -> empiriquement ~= 2.365*10-3
     */
 	
 	AMux_Idac_Select(1); 
@@ -187,7 +187,7 @@ void Regulation(float actualTemp, float consigne){
     
     reg+=(error*P);                     // P
     
-    if(reg<300){            //compensation offset de chauffe    //calib en fonction de la T la plus basse ?
+    if(reg<300){            //compensation offset de chauffe    //définir en fonction de la T la plus basse ? -> calib
         reg = 300;
     }
       
@@ -201,9 +201,9 @@ void Regulation(float actualTemp, float consigne){
 
 int main(){
 
-char buffer[100];
-char usbbuffer[100];
-char state[100];
+char buffer[100];  	//def malloc à faire
+char usbbuffer[100];	//
+char state[100];	//
 
 float temperature;
 int16 psoc_temperature;
@@ -331,8 +331,8 @@ DieTemp_GetTemp(&IdacCalib_temperature);
             }
         CyDelay(100);
         
-        if(step!=0){    //prototype de dérivée pour asservissement - non validé
-            deriv = (GetTemp()-prevTemp)/((float)(InterruptCnt-prevTime)/1000);
+        if(step!=0){    //WIP - prototype de dérivée pour asservissement - non validé
+            deriv = (GetTemp()-prevTemp)/((float)(InterruptCnt-prevTime)/1000);  // dx/dt
             prevTemp = GetTemp();
             prevTime = InterruptCnt;
         }
