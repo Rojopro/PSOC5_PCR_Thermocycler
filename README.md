@@ -63,7 +63,7 @@ We can see the temperature precision is top notch :
 ![AsservissementQ](https://github.com/Rojopro/PSOC5_PCR_Thermocycler/blob/main/Doc/AsservissementQ.PNG)
 
 ## To Do
-* An auto-calibration function is needed, as resistance varies greatly between chips. Consider linearising the 25-70°C measures with 0°C, or use an exterior ambiant temperature measure to assume the resistance offset. Thermal coefficient may or may not need caibration as well.
+* An initial chip auto-calibration function is needed, as resistance varies greatly between each ones. Consider linearising the 25-70°C measures with 0°C, or use an exterior ambiant temperature measure to assume the resistance offset. Thermal coefficient may or may not need caibration as well.
 * Control Loop could use a bit more tuning (faster and/or less overshoot).
 * Currently, software filter is disabled to avoid overflow (see commented lines in main.c).
 * Find a way to put disposable and thermally-conductive recipient in contact with the chip for an actual test.
