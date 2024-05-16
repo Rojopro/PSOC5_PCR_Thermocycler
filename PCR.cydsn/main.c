@@ -63,34 +63,14 @@ CY_ISR(sw1Handler)
 
 void DMA_Config(void)   //WIP - non validé
 {
-    /* Declare variable to hold the handle for DMA channel */
     uint8 channelHandle;
-
-    /* Declare DMA Transaction Descriptor for memory transfer into
-     * Filter Channel.
-     */
     uint8 tdChanA;
 
-    /* Configure the DMA to Transfer the data in 1 burst with individual trigger
-     * for each burst.
-     */
     channelHandle = DMA_DmaInitialize((1u), (1u), HI16(CYDEV_PERIPH_BASE), HI16(CYDEV_PERIPH_BASE));
-
-    /* This function allocates a TD for use with an initialized DMA channel */
     tdChanA = CyDmaTdAllocate();
-
-    /* Configure the tdChanA to transfer 1 byte with no next TD */
     CyDmaTdSetConfiguration(tdChanA, 1u, DMA_INVALID_TD, 0u);
-
-    /* Set the source address as ADC_DelSig and the destination as
-     * Filter Channel A.
-     */
     CyDmaTdSetAddress(tdChanA, LO16((uint32)ADC_DEC_SAMP_PTR), LO16((uint32)Filter_1_STAGEAH_PTR));
-
-    /* Set tdChanA to be the initial TD associated with channelHandle */
     CyDmaChSetInitialTd(channelHandle, tdChanA);
-
-    /* Enable the DMA channel represented by channelHandle and preserve the TD */
     CyDmaChEnable(channelHandle, 1u);
 }
 
@@ -159,10 +139,7 @@ float GetTemp(){
         ADC_StartConvert();
         ADC_IsEndConversion(ADC_WAIT_FOR_RESULT);        
         ADC_StopConvert();
-        V_mes = ADC_CountsTo_uVolts(ADC_GetResult32())-Adc_Offset; 
-        
-       /* while (Filter_1_IsInterruptChannelA() == 0) ;                     ///////overflow du filtre
-	    V_mes = ADC_CountsTo_uVolts(Filter_1_Read16(Filter_1_CHANNEL_A));*/
+        V_mes = ADC_CountsTo_uVolts(ADC_GetResult32())-Adc_Offset;
 	
 	IDAC_SetValue(0);
     
@@ -177,8 +154,6 @@ void Regulation(float actualTemp, float consigne){
     float error;
     
     error = consigne - actualTemp;
-    
-    //reg += (deriv*D);                 // D /!\ non calibré - risque de surchauffe /!\
     
     if(error>0 && reg < 65535 ){        // I
         reg+=I;}
@@ -330,12 +305,6 @@ DieTemp_GetTemp(&IdacCalib_temperature);
             USBUART_PutString(usbbuffer);
             }
         CyDelay(100);
-        
-        if(step!=0){    //WIP - prototype de dérivée pour asservissement - non validé
-            deriv = (GetTemp()-prevTemp)/((float)(InterruptCnt-prevTime)/1000);  // dx/dt
-            prevTemp = GetTemp();
-            prevTime = InterruptCnt;
-        }
     }
 }
 
